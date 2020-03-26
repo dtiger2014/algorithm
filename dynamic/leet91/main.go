@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 /*
 !!!!!
@@ -19,13 +22,13 @@ var (
 )
 
 func main() {
-	s := "123"
+	s := "12"
 
 	// res := numDecodings1(s)
 
-	res := numDecodings2(s)
-
+	res, op := numDecodings3(s)
 	fmt.Println(res)
+	fmt.Println(op)
 }
 
 func numDecodings1(s string) int {
@@ -78,14 +81,78 @@ func subString(str string, begin, length int) (substr string) {
 	return string(rs[begin:end])
 }
 
+// 数字字符串，最小的问题是 可以从最后一个字符开始
 func numDecodings2(s string) int {
 	n := len(s)
+	if s[0] == '0' {
+		return 0
+	}
 
-	if n == 1 || s[0] == '0' {
-
+	if n == 1 {
+		return 1
 	}
 
 	memo := make([]int, n+1)
-	memo[n] = 1;
-	for 
+	memo[n] = 1
+	for i := n - 1; i >= 0; i-- {
+		if s[i] != '0' {
+			memo[i] = memo[i+1]
+			if i+1 < n && subString(s, i, 2) <= "26" {
+				memo[i] += memo[i+2]
+			}
+		}
+	}
+
+	return memo[0]
+}
+
+// 输出所有结果
+func numDecodings3(s string) (int, []string) {
+	op := make([]string, 0)
+
+	n := len(s)
+	if s[0] == '0' {
+		return 0, op
+	}
+
+	if n == 1 {
+		op = append(op, getChar(s))
+		return 1, op
+	}
+
+	memo := make([]int, n+1)
+	memo[n] = 1
+	for i := n - 1; i >= 0; i-- {
+		if s[i] != '0' {
+			
+			memo[i] = memo[i+1]
+			
+			if i+1 < n && subString(s, i, 2) <= "26" {
+				memo[i] += memo[i+2]
+			}
+		}
+	}
+
+	return memo[0], op
+}
+
+func getChar(s string) string {
+	num, _ := strconv.Atoi(s)
+	res := string(num - 1 + 'A')
+	return res
+}
+
+func saveOP(op []string, str string, isNew bool) {
+	n := len(op)
+	if isNew {
+		for i := 0; i < n; i++ {
+			op = append(op, str+op[i])
+		}
+	} else {
+		for k, v := range op {
+			op[k] = str + v
+		}
+	}
+	
+	fmt.Println(op)
 }
