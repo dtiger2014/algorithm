@@ -2,6 +2,7 @@ package utils
 
 import (
 	"math/rand"
+	"time"
 )
 
 // GenerateRandomArray 生成有n个元素的随机数组，每个元素的随即范围为[rangeL, rangeR]
@@ -9,6 +10,8 @@ func GenerateRandomArray(n, rangeL, rangeR int) []int {
 	if rangeR < rangeL {
 		return []int{}
 	}
+
+	rand.Seed(time.Now().Unix())
 
 	arr := make([]int, n)
 	for i := 0; i < n; i++ {
@@ -24,6 +27,8 @@ func GenerateNearlyOrderedArray(n, swapTimes int) []int {
 		arr[i] = i
 	}
 
+	rand.Seed(time.Now().Unix())
+	
 	for i := 0; i < swapTimes; i++ {
 		posX := rand.Intn(n)
 		posY := rand.Intn(n)

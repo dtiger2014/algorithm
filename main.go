@@ -2,6 +2,7 @@ package main
 
 import (
 	"algorithm/heap"
+	"algorithm/search"
 	"algorithm/sort"
 	"algorithm/utils"
 	"fmt"
@@ -9,9 +10,11 @@ import (
 )
 
 func main() {
-	testSort()
+	// testSort()
 	// testHeap()
+	// testSearch()
 }
+
 func testHeap() {
 	n := 10
 
@@ -117,11 +120,24 @@ func testSort() {
 	sort.HeapSort(arr11)
 	fmt.Println(title, "执行时间：", time.Since(cpTime))
 	fmt.Println(title, "是否排序排序：", utils.CheckArrayIsSorted(arr11))
-	
+
 	title = "HeapSort3"
 	cpTime = time.Now()
 	sort.HeapSort3(arr12)
 	fmt.Println(title, "执行时间：", time.Since(cpTime))
 	fmt.Println(title, "是否排序排序：", utils.CheckArrayIsSorted(arr12))
-	
+
+}
+
+func testSearch() {
+	arr := utils.GenerateRandomArray(5, 0, 100)
+	sort.QuickSort3Ways(arr)
+	fmt.Println(arr)
+
+	floor := search.BinarySearchFloor(arr, arr[2])
+	fmt.Println(floor)
+	ceil := search.BinarySearchCeil(arr, arr[2])
+	fmt.Println(ceil)
+	// index := search.BinarySearch(arr, 200)
+	// fmt.Println(index, arr[index])
 }

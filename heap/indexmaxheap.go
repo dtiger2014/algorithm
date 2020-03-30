@@ -12,8 +12,9 @@ type IndexMaxHeap struct {
 // NewIndexMaxHeap 创建最大堆
 func NewIndexMaxHeap() *IndexMaxHeap {
 	return &IndexMaxHeap{
-		data:  make([]int, 1),
-		count: 0,
+		data:    make([]int, 1),
+		indexes: make([]int, 1),
+		count:   0,
 	}
 }
 
@@ -47,9 +48,12 @@ func (h *IndexMaxHeap) IsEmpty() bool {
 
 // Insert 入队
 func (h *IndexMaxHeap) Insert(item int) {
-	h.data = append(h.data, item)
-	h.shiftUp(h.count + 1)
 	h.count++
+
+	h.data = append(h.data, item)
+	h.indexes = append(h.indexes, h.count)
+	
+	h.shiftUp(h.count)
 }
 
 func (h *IndexMaxHeap) shiftUp(k int) {
@@ -67,9 +71,9 @@ func (h *IndexMaxHeap) ExtractMax() (int, error) {
 	if h.count <= 0 {
 		return 0, errors.New("MaxHeap is empty")
 	}
-	ret := h.data[1]
+	ret := h.data[h.indexes[1]]
 
-	h.data[1], h.data[h.count] = h.data[h.count], h.data[1]
+	h.indexes[1], h.indexes[h.count] = h.indexes[h.count], h.indexes[1]
 	h.data = h.data[:h.count]
 	h.count--
 	h.shiftDown(1)
