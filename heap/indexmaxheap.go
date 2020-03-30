@@ -2,12 +2,11 @@ package heap
 
 import "errors"
 
-// TODO: 索引堆 
-
 // IndexMaxHeap 索引最大堆
 type IndexMaxHeap struct {
-	data  []int
-	count int
+	data    []int
+	indexes []int
+	count   int
 }
 
 // NewIndexMaxHeap 创建最大堆
@@ -55,10 +54,10 @@ func (h *IndexMaxHeap) Insert(item int) {
 
 func (h *IndexMaxHeap) shiftUp(k int) {
 	for {
-		if !(k > 1 && h.data[k/2] < h.data[k]) {
+		if !(k > 1 && h.data[h.indexes[k/2]] < h.data[h.indexes[k]]) {
 			break
 		}
-		h.data[k/2], h.data[k] = h.data[k], h.data[k/2]
+		h.indexes[k/2], h.indexes[k] = h.indexes[k], h.indexes[k/2]
 		k /= 2
 	}
 }
@@ -85,7 +84,7 @@ func (h *IndexMaxHeap) shiftDown(k int) {
 		}
 
 		j := 2 * k
-		if j+1 <= h.count && h.data[j+1] > h.data[j] {
+		if j+1 <= h.count && h.data[h.indexes[j+1]] > h.data[h.indexes[j]] {
 			j++
 		}
 
