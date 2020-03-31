@@ -20,6 +20,15 @@ func GenerateRandomArray(n, rangeL, rangeR int) []int {
 	return arr
 }
 
+// GenerateArray 生成一个有序数组, rangeL为 第一个元素的值，后续元素+1
+func GenerateArray(n, rangeL int) []int {
+	arr := make([]int, n)
+	for i := 0; i < n; i++ {
+		arr[i] = rangeL + i
+	}
+	return arr
+}
+
 // GenerateNearlyOrderedArray 生成近乎有序的数组
 func GenerateNearlyOrderedArray(n, swapTimes int) []int {
 	arr := make([]int, n)
@@ -28,7 +37,7 @@ func GenerateNearlyOrderedArray(n, swapTimes int) []int {
 	}
 
 	rand.Seed(time.Now().Unix())
-	
+
 	for i := 0; i < swapTimes; i++ {
 		posX := rand.Intn(n)
 		posY := rand.Intn(n)

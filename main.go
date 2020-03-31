@@ -13,6 +13,7 @@ func main() {
 	// testSort()
 	// testHeap()
 	// testSearch()
+	testBinarySearch()
 }
 
 func testHeap() {
@@ -140,4 +141,25 @@ func testSearch() {
 	fmt.Println(ceil)
 	// index := search.BinarySearch(arr, 200)
 	// fmt.Println(index, arr[index])
+}
+
+func testBinarySearch() {
+	n := 20000000
+	arr1 := utils.GenerateArray(n, n+1)
+	arr2 := utils.GenerateArray(n, 0)
+
+	arr1 = append(arr1, arr2...)
+	fmt.Println(len(arr1))
+
+	target:= 1000
+
+	cp := time.Now()
+	res := search.BinarySearchByUnSortedArray(arr1, target)
+	fmt.Println("BinarySearchByUnSortedArray:", res)
+	fmt.Println("BinarySearchByUnSortedArray 执行时间：", time.Since(cp))
+
+	cp = time.Now()
+	res = search.BinarySearchByUnSortedArrayNormal(arr1, target)
+	fmt.Println("BinarySearchByUnSortedArrayNormal:", res)
+	fmt.Println("BinarySearchByUnSortedArrayNormal 执行时间：", time.Since(cp))
 }

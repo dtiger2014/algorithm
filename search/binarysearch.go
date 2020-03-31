@@ -79,3 +79,53 @@ JUMP:
 	}
 	return r
 }
+
+// BinarySearchByUnSortedArrayNormal 循环查找法，
+func BinarySearchByUnSortedArrayNormal(nums []int, target int)int {
+	if len(nums) == 0 {
+		return -1
+	}
+	for i, v := range nums {
+		if v == target {
+			return i
+		}
+	}
+	return -1
+}
+// BinarySearchByUnSortedArray 二分查找法，在数组中间截断不满足顺序。例如:[3,4,5,0,1,2]
+func BinarySearchByUnSortedArray(nums []int, target int) int {
+	n := len(nums)
+	if n == 0 {
+		return -1
+	}
+	start, end, premid, mid := 0, n-1, 0, 0
+	for end-start > 1 {
+		mid = start + (end-start)>>1
+		if nums[start] > nums[end] && nums[end] < nums[mid] {
+			start = mid
+		} else {
+			end = mid
+		}
+	}
+	if nums[start] > nums[end] {
+		start = end
+	}
+
+	end = start + n - 1
+	for start <= end {
+		premid = start + (end-start)>>1
+		if premid < n {
+			mid = premid
+		} else {
+			mid = premid - n
+		}
+		if nums[mid] == target {
+			return mid
+		} else if nums[mid] < target {
+			start = premid + 1
+		} else {
+			end = premid - 1
+		}
+	}
+	return -1
+}
