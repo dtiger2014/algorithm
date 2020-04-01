@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"sort"
 )
 
 func main() {
@@ -20,7 +21,58 @@ func main() {
 	}
 	fmt.Println(arr)
 
-	fmt.Println(findDiagonalOrder(arr))
+	// fmt.Println(findDiagonalOrder(arr))
+
+	fmt.Println("==============")
+
+	testSort1()
+}
+
+// test sort
+
+type sds struct {
+	datas []*sd
+}
+type sd struct {
+	id     int
+	status int
+}
+
+func (arr *sds) Len() int {
+	return len(arr.datas)
+}
+func (arr *sds) Less(i, j int) bool {
+	if arr.datas[j].status < arr.datas[i].status {
+		return true
+	} else if arr.datas[j].status == arr.datas[i].status {
+		if arr.datas[j].id > arr.datas[i].id {
+			return true
+		}
+		return false
+	} else {
+		return false
+	}
+}
+func (arr *sds) Swap(i, j int) {
+	arr.datas[i], arr.datas[j] = arr.datas[j], arr.datas[i]
+}
+
+func testSort1() {
+	arr := &sds{
+		datas: []*sd{
+			{id: 500, status: 0},
+			{id: 200, status: 1},
+			{id: 700, status: 2},
+			{id: 300, status: 2},
+			{id: 1000, status: 1},
+		},
+	}
+	sort.Sort(arr)
+
+	for _, v := range arr.datas {
+		fmt.Printf("%+v\n", v)
+	}
+
 }
 
 func search(nums []int, target int) int {
