@@ -7,26 +7,48 @@ import (
 )
 
 func main() {
-	// arr := [][]int{
-	// 	// {1, 2, 3},
-	// 	// {4, 5, 6},
-	// 	// {7, 8, 9},
-	// 	// {3},
-	// 	// {2},
-	// 	// {7},
-	// 	// {9},
-	// 	// {6},
-	// 	{2, 5, 8},
-	// 	{4, 0, -1},
-	// }
-	// fmt.Println(arr)
+	arr := [][]int{
+		{1, 2, 3},
+		{4, 5, 6},
+		{7, 8, 9},
+	}
+	fmt.Println(arr)
 
-	// fmt.Println(findDiagonalOrder(arr))
-
-	testString()
+	fmt.Println(spiralOrder(arr))
 }
 
-func testString() {
+func spiralOrder(matrix [][]int) []int {
+	ret := []int{}
+	if len(matrix) == 0 || len(matrix[0]) == 0 {
+		return ret
+	}
+
+	mSize, nSize := len(matrix), len(matrix[0])
+	m1, m2, n1, n2 := 0, mSize-1, 0, nSize-1
+	count := 0
+	for count < mSize*nSize {
+		for i := n1; n1 <= n2 && i <= n2; i++ {
+			ret = append(ret, matrix[m1][i])
+			count++
+		}
+		for i := m1 + 1; m1 <= m2 && i < m2; i++ {
+			ret = append(ret, matrix[i][n2])
+			count++
+		}
+		for i := n2; n1 <= n2 && i >= n1; i-- {
+			ret = append(ret, matrix[m2][i])
+			count++
+		}
+		for i := m2 - 1; m1 <= m2 && i > m1; i-- {
+			ret = append(ret, matrix[i][n1])
+			count++
+		}
+		m1++ //= int(math.Max(float64(m1+1), float64(len(matrix)-1)))
+		m2-- //= int(math.Min(float64(m2-1), float64(0)))
+		n1++ //= int(math.Max(float64(n1+1), float64(len(matrix[0])-1)))
+		n2-- //= int(math.Min(float64(n2-1), float64(0)))
+	}
+	return ret
 }
 
 // test sort
