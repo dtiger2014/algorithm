@@ -7,29 +7,29 @@ import (
 )
 
 func main() {
-	arr := [][]int{
-		// {1, 2, 3},
-		// {4, 5, 6},
-		// {7, 8, 9},
-		// {3},
-		// {2},
-		// {7},
-		// {9},
-		// {6},
-		{2, 5, 8},
-		{4, 0, -1},
-	}
-	fmt.Println(arr)
+	// arr := [][]int{
+	// 	// {1, 2, 3},
+	// 	// {4, 5, 6},
+	// 	// {7, 8, 9},
+	// 	// {3},
+	// 	// {2},
+	// 	// {7},
+	// 	// {9},
+	// 	// {6},
+	// 	{2, 5, 8},
+	// 	{4, 0, -1},
+	// }
+	// fmt.Println(arr)
 
 	// fmt.Println(findDiagonalOrder(arr))
 
-	fmt.Println("==============")
+	testString()
+}
 
-	testSort1()
+func testString() {
 }
 
 // test sort
-
 type sds struct {
 	datas []*sd
 }
@@ -192,9 +192,8 @@ func plusOne(digits []int) []int {
 		ret[0] = 1
 		ret = append(ret, digits...)
 		return ret
-	} else {
-		return digits
 	}
+	return digits
 }
 
 func findDiagonalOrder(matrix [][]int) []int {
