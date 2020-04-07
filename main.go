@@ -2,10 +2,12 @@ package main
 
 import (
 	"algorithm/heap"
+	linkedlist "algorithm/linkedlist"
 	"algorithm/search"
 	"algorithm/sort"
 	"algorithm/utils"
 	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -13,7 +15,190 @@ func main() {
 	// testSort()
 	// testHeap()
 	// testSearch()
-	testBinarySearch()
+	// testBinarySearch()
+
+	// arr := []int{73, 74, 75, 71, 69, 72, 76, 73}
+	// arr := []string{"10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"}
+	// // OUTPUT: [1, 1, 4, 2, 1, 1, 0, 0]
+	// fmt.Println(evalRPN(arr))
+	// testMylinkedlist()
+
+	fmt.Println(8^8)
+
+	a := 0
+	fmt.Println(a)
+	a ^= 4
+	fmt.Println(a)
+	
+	a ^= 8
+	fmt.Println(a)
+	
+	a ^= 4
+	fmt.Println(a)
+	
+	a ^= 2
+	fmt.Println(a)
+}
+
+func testMylinkedlist() {
+	arr := []int{1, 2, 1}
+
+	dum := &linkedlist.ListNode{}
+	head := dum
+	for i := 0; i < len(arr); i++ {
+		node := &linkedlist.ListNode{
+			Val:  arr[i],
+			Next: nil,
+		}
+		head.Next = node
+		head = head.Next
+	}
+	fmt.Println(dum.Next)
+
+	fmt.Println(linkedlist.IsPalindrome(dum.Next))
+}
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+func inorderTraversal(root *TreeNode) []int {
+	ret := []int{}
+	inorderTraversalNode(root, &ret)
+
+	return ret
+}
+
+func inorderTraversalNode(node *TreeNode, ret *[]int) {
+	if node == nil {
+		return
+	}
+
+	inorderTraversalNode(node.Left, ret)
+	*ret = append(*ret, node.Val)
+	inorderTraversalNode(node.Right, ret)
+}
+
+func evalRPN(tokens []string) int {
+	stack := []int{}
+
+	for i := 0; i < len(tokens); i++ {
+		char := tokens[i]
+
+		switch char {
+		case "+":
+			stack[len(stack)-2] = stack[len(stack)-2] + stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+		case "-":
+			stack[len(stack)-2] = stack[len(stack)-2] - stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+		case "*":
+			stack[len(stack)-2] = stack[len(stack)-2] * stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+		case "/":
+			stack[len(stack)-2] = stack[len(stack)-2] / stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+		default:
+			num, _ := strconv.Atoi(char)
+			stack = append(stack, num)
+		}
+	}
+	return stack[0]
+}
+
+type MyStack struct {
+	data []int
+}
+
+func NewMyStack() *MyStack {
+	return &MyStack{
+		data: []int{},
+	}
+}
+
+func (s *MyStack) Push(val int) {
+	s.data = append(s.data, val)
+}
+
+func (s *MyStack) Pop() {
+	if len(s.data) == 0 {
+		return
+	}
+
+	s.data = s.data[:len(s.data)-1]
+}
+
+func (s *MyStack) Top() int {
+	if len(s.data) == 0 {
+		return -1
+	}
+	return s.data[len(s.data)-1]
+}
+
+func dailyTemperatures(T []int) []int {
+	ret := make([]int, len(T))
+	if len(T) <= 1 {
+		return ret
+	}
+
+	mystack := NewMyStack()
+	for i := 0; i < len(T); i++ {
+		for mystack.Top() != -1 && T[i] > T[mystack.Top()] {
+			ret[mystack.Top()] = i - mystack.Top()
+			mystack.Pop()
+		}
+		mystack.Push(i)
+	}
+	return ret
+}
+
+func isValid(s string) bool {
+	if s == "" {
+		return true
+	}
+	if len(s)%2 != 0 {
+		return false
+	}
+
+	stack := []byte{s[0]}
+	var char byte
+	for i := 1; i < len(s); i++ {
+		switch s[i] {
+		case ')':
+			char = '('
+			break
+		case ']':
+			char = '['
+			break
+		case '}':
+			char = '{'
+			break
+		default:
+			stack = append(stack, s[i])
+			continue
+		}
+
+		if len(stack) == 0 || stack[len(stack)-1] != char {
+			return false
+		}
+		stack = stack[:len(stack)-1]
+	}
+
+	if len(stack) == 0 {
+		return true
+	}
+
+	return false
 }
 
 func testHeap() {
@@ -151,7 +336,7 @@ func testBinarySearch() {
 	arr1 = append(arr1, arr2...)
 	fmt.Println(len(arr1))
 
-	target:= 1000
+	target := 1000
 
 	cp := time.Now()
 	res := search.BinarySearchByUnSortedArray(arr1, target)
