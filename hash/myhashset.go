@@ -4,10 +4,6 @@ type MyHashSet struct {
 	data [][]int
 }
 
-const (
-	hashSize = 1000
-)
-
 /** Initialize your data structure here. */
 func Constructor() MyHashSet {
 	ret := MyHashSet{

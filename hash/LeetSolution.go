@@ -1,6 +1,8 @@
 package hash
 
-import "sort"
+import (
+	"sort"
+)
 
 func containsDuplicate(nums []int) bool {
 	if len(nums) <= 1 {
@@ -302,22 +304,22 @@ func containsNearbyDuplicate(nums []int, k int) bool {
 所有输入均为小写字母。
 不考虑答案输出的顺序。
 */
+type byteSlice []byte
 
-type MyStr2 []byte
-
-func (s MyStr2) Len() int           { return len(s) }
-func (s MyStr2) Less(i, j int) bool { return s[i] < s[j] }
-func (s MyStr2) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+func (s byteSlice) Len() int           { return len(s) }
+func (s byteSlice) Less(i, j int) bool { return s[i] < s[j] }
+func (s byteSlice) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
 
 func groupAnagrams(strs []string) [][]string {
 	memo := make(map[string][]string)
-	for _, v := range strs {
-		myStrV := MyStr2("abcd")
-		sortedStr := string(sort.Sort(myStrV))
+	for i := 0; i < len(strs); i++ {
+		convertStr := byteSlice(strs[i])
+		sort.Sort(convertStr)
+		sortedStr := string(convertStr)
 		if _, ok := memo[sortedStr]; !ok {
 			memo[sortedStr] = make([]string, 0)
 		}
-		memo[sortedStr] = append(memo[sortedStr], v)
+		memo[sortedStr] = append(memo[sortedStr], strs[i])
 	}
 
 	ret := [][]string{}
@@ -325,4 +327,106 @@ func groupAnagrams(strs []string) [][]string {
 		ret = append(ret, v)
 	}
 	return ret
+}
+
+/*
+给定一个字符串，对该字符串可以进行 “移位” 的操作，也就是将字符串中每个字母都变为其在字母表中后续的字母，
+比如："abc" -> "bcd"。这样，我们可以持续进行 “移位” 操作，从而生成如下移位序列：
+
+"abc" -> "bcd" -> ... -> "xyz"
+给定一个包含仅小写字母字符串的列表，将该列表中所有满足 “移位” 操作规律的组合进行分组并返回。
+
+示例：
+
+输入: ["abc", "bcd", "acef", "xyz", "az", "ba", "a", "z"]
+输出:
+[
+  ["abc","bcd","xyz"],
+  ["az","ba"],
+  ["acef"],
+  ["a","z"]
+]
+*/
+func calShiftCharString(str string, cnt int) string {
+	res := []byte(str)
+	for i := 0; i < len(res); i++ {
+		res[i] = ((res[i]-'a')+byte(cnt))%26 + 'a'
+	}
+	return string(res)
+}
+func groupStrings(strings []string) [][]string {
+	memo := make(map[string][]string)
+	for _, str := range strings {
+		for i := 0; i < 26; i++ {
+			shiftStr := calShiftCharString(str, i)
+			if _, ok := memo[shiftStr]; ok {
+				memo[shiftStr] = append(memo[shiftStr], str)
+				goto NEXT
+			}
+		}
+
+		memo[str] = []string{str}
+	NEXT:
+	}
+
+	ret := [][]string{}
+	for _, v := range memo {
+		ret = append(ret, v)
+	}
+	return ret
+}
+
+
+/*
+判断一个 9x9 的数独是否有效。只需要根据以下规则，验证已经填入的数字是否有效即可。
+
+数字 1-9 在每一行只能出现一次。
+数字 1-9 在每一列只能出现一次。
+数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。
+
+上图是一个部分填充的有效的数独。
+
+数独部分空格内已填入了数字，空白格用 '.' 表示。
+
+示例 1:
+
+输入:
+[
+  ["5","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  [".",".",".",".","8",".",".","7","9"]
+]
+输出: true
+示例 2:
+
+输入:
+[
+  ["8","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  [".",".",".",".","8",".",".","7","9"]
+]
+输出: false
+解释: 除了第一行的第一个数字从 5 改为 8 以外，空格内其他数字均与 示例1 相同。
+     但由于位于左上角的 3x3 宫内有两个 8 存在, 因此这个数独是无效的。
+说明:
+
+一个有效的数独（部分已被填充）不一定是可解的。
+只需要根据以上规则，验证已经填入的数字是否有效即可。
+给定数独序列只包含数字 1-9 和字符 '.' 。
+给定数独永远是 9x9 形式的。
+*/
+func isValidSudoku(board [][]byte) bool {
+
 }
