@@ -1,6 +1,7 @@
 package hash
 
 import (
+	"fmt"
 	"sort"
 )
 
@@ -376,7 +377,6 @@ func groupStrings(strings []string) [][]string {
 	return ret
 }
 
-
 /*
 判断一个 9x9 的数独是否有效。只需要根据以下规则，验证已经填入的数字是否有效即可。
 
@@ -428,5 +428,30 @@ func groupStrings(strings []string) [][]string {
 给定数独永远是 9x9 形式的。
 */
 func isValidSudoku(board [][]byte) bool {
+	memo := make(map[string]int)
 
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[0]); j++ {
+			if board[i][j] == '.' {
+				continue
+			}
+			kHori := fmt.Sprintf("%v_h_%v", board[i][j], i)
+			kVert := fmt.Sprintf("%v_v_%v", board[i][j], j)
+			kBloc := fmt.Sprintf("%v_b_%v%v", board[i][j], i/3, j/3)
+
+			if _, ok := memo[kHori]; ok {
+				return false
+			}
+			if _, ok := memo[kVert]; ok {
+				return false
+			}
+			if _, ok := memo[kBloc]; ok {
+				return false
+			}
+			memo[kHori] = 1
+			memo[kVert] = 1
+			memo[kBloc] = 1
+		}
+	}
+	return true
 }
