@@ -190,37 +190,87 @@ func hasPathSum(root *TreeNode, sum int) bool {
     /  \
    15   7
 */
-func buildTree(inorder []int, postorder []int) *TreeNode {
-	if len(inorder) == 0 || len(postorder) == 0 || len(inorder) != len(postorder) {
+// func buildTree(inorder []int, postorder []int) *TreeNode {
+// 	rootIdx := len(postorder) - 1
+// 	for idx := range inorder {
+// 		if inorder[idx] == postorder[rootIdx] {
+// 			return &TreeNode{
+// 				Val:   inorder[idx],
+// 				Left:  buildTree(inorder[:idx], postorder[:idx]),
+// 				Right: buildTree(inorder[idx+1:], postorder[idx:rootIdx]),
+// 			}
+// 		}
+// 	}
+// 	return nil
+// }
+
+/*
+根据一棵树的前序遍历与中序遍历构造二叉树。
+
+注意:
+你可以假设树中没有重复的元素。
+
+例如，给出
+
+前序遍历 preorder = [3,9,20,15,7]
+中序遍历 inorder = [9,3,15,20,7]
+返回如下的二叉树：
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+*/
+func buildTree(preorder []int, inorder []int) *TreeNode {
+	rootIdx := 0
+
+	for idx := range inorder {
+		if preorder[rootIdx] == inorder[idx] {
+			return &TreeNode{
+				Val:   preorder[rootIdx],
+				Left:  buildTree(preorder[rootIdx+1:idx+1], inorder[:idx]),
+				Right: buildTree(preorder[idx+1:], inorder[idx+1:]),
+			}
+		}
+	}
+	return nil
+
+}
+
+type Node struct {
+	Val   int
+	Left  *Node
+	Right *Node
+	Next  *Node
+}
+
+func connect(root *Node) *Node {
+	if root == nil {
 		return nil
 	}
 
-	rootVal := postorder[len(postorder)-1]
-	root := &TreeNode{Val: rootVal}
-	idx := -1
-	for i, v := range inorder {
-		if v == rootVal {
-			idx = i
-			break
+	queue := []*Node{root}
+	for len(queue) > 0 {
+		size := len(queue)
+		for i := 0; i < size-1; i++ {
+			queue[i].Next = queue[i+1]
 		}
+
+		for i := 0; i < size; i++ {
+			if queue[i].Left != nil {
+				queue = append(queue, queue[i].Left)
+			}
+			if queue[i].Right != nil {
+				queue = append(queue, queue[i].Right)
+			}
+		}
+		queue = queue[size:]
 	}
-	root.Left = buildTreeNode(inorder[:idx])
-	root.Right = buildTreeNode(inorder[idx+1:])
 	return root
 }
 
-func buildTreeNode(data []int) *TreeNode{
-	if len(data) == 0 {
-		return nil
-	}
 
-	if len(data) == 1 {
-		return &TreeNode{Val:data[0]}
-	}
-
-	idx := (len(data)-1)/2
-	if idx == 0 {
-		
-	}
-
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+  
 }

@@ -6,7 +6,9 @@ import (
 )
 
 func main() {
-	getMonday()
+	arr := []int{1, 2, 3}
+	fmt.Println(arr[:3])
+	fmt.Println(arr[3:3])
 }
 
 func getMonday() {
