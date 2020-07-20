@@ -4,17 +4,60 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"time"
+
+	"algorithm/utils"
 )
 
 func main() {
-	arr := [][]int{
-		{1, 2, 3},
-		{4, 5, 6},
-		{7, 8, 9},
-	}
-	fmt.Println(arr)
+	// arr := [][]int{
+	// 	{1, 2, 3},
+	// 	{4, 5, 6},
+	// 	{7, 8, 9},
+	// }
+	// fmt.Println(arr)
 
-	fmt.Println(spiralOrder(arr))
+	// fmt.Println(spiralOrder(arr))
+	n := 100000
+	arr := utils.GenerateRandomArray(n, 0, 1000)
+	fmt.Printf("rand array: len=%d\n", len(arr))
+
+	// 计时
+	startTime := time.Now()
+
+	// 开始计算
+	res := test1(arr)
+
+	fmt.Println("执行时间：", time.Since(startTime))
+	// fmt.Println("计算次数: ", num)
+
+	fmt.Println(res)
+
+}
+
+func test1(arr []int) int {
+
+	// sum1 := 0
+	sum2 := 0
+	n := len(arr)
+
+	sort.Ints(arr)
+
+	for i := 0; i < 100000; i++ {
+		for j := 0; j < n; j++ {
+			// if 语句进行判断
+			// if arr[j] > 128 {
+			// 	sum1 += arr[j]
+			// }
+
+			// 进行位运算
+			t := (arr[j] - 128) >> 31
+			sum2 += ^t & arr[j]
+		}
+	}
+
+	// fmt.Println(sum1, sum2)
+	return sum2
 }
 
 func spiralOrder(matrix [][]int) []int {

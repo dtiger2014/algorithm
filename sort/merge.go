@@ -47,7 +47,7 @@ func MergeSort2(arr []int) {
 }
 func mergeSortArray2(arr []int, l, r int) {
 	if r-l <= 15 {
-		InsertionSort(arr[l : r+1])
+		// InsertionSort(arr[l : r+1])
 		return
 	}
 
@@ -76,8 +76,8 @@ func MergeSortBU(arr []int) {
 	// 优化1：先把 数组分成小数组， 使用insertion sort进行排序
 	// 优化2：归并前 判断，2个数组是否已经满足条件？
 	for i := 0; i < n; i += 16 {
-		r := int(math.Min(float64(i+16), float64(n)))
-		InsertionSort(arr[i:r])
+		// r := int(math.Min(float64(i+16), float64(n)))
+		// InsertionSort(arr[i:r])
 	}
 
 	// if n <= 16 {

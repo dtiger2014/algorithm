@@ -15,7 +15,7 @@ func quickSort(arr []int, l, r int) {
 	// 	return
 	// }
 	if r-l <= 15 {
-		InsertionSort(arr[l : r+1])
+		// InsertionSort(arr[l : r+1])
 		return
 	}
 
@@ -90,7 +90,7 @@ func QuickSort3Ways(arr []int) {
 }
 func quickSort3Ways(arr []int, l, r int) {
 	if r-l <= 15 {
-		InsertionSort(arr[l : r+1])
+		// InsertionSort(arr[l : r+1])
 		return
 	}
 
