@@ -11,9 +11,9 @@ var (
 
 type SortInt []int
 
-func (p SortInt) Len() int           { return len(p) }
-func (p SortInt) Less(i, j int) bool { return p[i] < p[j] }
-func (p SortInt) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
+func (p SortInt) Len() int               { return len(p) }
+func (p SortInt) CompareTo(i, j int) int { return p[i] - p[j] }
+func (p SortInt) Swap(i, j int)          { p[i], p[j] = p[j], p[i] }
 
 func Test_SelectionSort(t *testing.T) {
 	data := ints

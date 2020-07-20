@@ -11,7 +11,7 @@ func SelectionSort(data Interface) {
 		// 寻找[i, n)区间里的最小值
 		minIdx := i
 		for j := i + 1; j < n; j++ {
-			if data.Less(j, minIdx) {
+			if data.CompareTo(j, minIdx) < 0 {
 				minIdx = j
 			}
 		}
@@ -26,7 +26,7 @@ func SelectionSort2(data Interface) {
 		// 确保 [0, i] 区间最最大值值
 		maxIdx := i
 		for j := i - 1; j >= 0; j-- {
-			if !data.Less(j, maxIdx) {
+			if data.CompareTo(j, maxIdx) > 0 {
 				maxIdx = j
 			}
 		}
